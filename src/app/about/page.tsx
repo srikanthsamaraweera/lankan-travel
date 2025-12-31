@@ -1,6 +1,30 @@
+import path from "path";
+import { promises as fs } from "fs";
+import AboutSlider from "../AboutSlider";
+
 export const dynamic = "force-dynamic";
 
-export default function AboutPage() {
+async function getAboutSliderImages() {
+  const dir = path.join(process.cwd(), "public", "aboutslider");
+  const allowed = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
+
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    return entries
+      .filter(
+        (entry) =>
+          entry.isFile() &&
+          allowed.has(path.extname(entry.name).toLowerCase()),
+      )
+      .map((entry) => `/aboutslider/${entry.name}`);
+  } catch {
+    return [];
+  }
+}
+
+export default async function AboutPage() {
+  const aboutImages = await getAboutSliderImages();
+
   return (
     <main className="min-h-screen bg-white/40">
       <section className="relative isolate overflow-hidden px-6 pb-20 pt-14 sm:pt-16 lg:px-10">
@@ -10,18 +34,10 @@ export default function AboutPage() {
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
         </div>
 
-        <div className="relative mx-auto max-w-4xl space-y-10">
-          <div className="space-y-4">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-              About
-            </span>
-            <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-foreground sm:text-5xl">
-              About Srilankan.vacations
-            </h1>
-            <p className="max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-              A Travel Discovery Platform for Exploring Sri Lanka
-            </p>
-          </div>
+        <div className="relative mx-auto max-w-5xl space-y-10">
+
+
+          <AboutSlider images={aboutImages} />
 
           <div className="space-y-6 rounded-3xl border border-[var(--border-soft)] bg-white/90 p-8 shadow-md shadow-[var(--accent)]/5 backdrop-blur">
             <p >
@@ -84,7 +100,7 @@ export default function AboutPage() {
               We aim to reflect Sri Lanka as it is experienced by travelers - diverse, vibrant, and layered - while making it easier for visitors to understand and explore.
             </p>
             <h1 className="text-2xl">Our Purpose</h1>
-            <p>SriLankan.travel exists to make planning a trip to Sri Lanka clearer, more inspiring, and more approachable. By highlighting destinations and experiences across the island, the platform helps travelers move from curiosity to confident planning — offering a meaningful introduction to Sri Lanka’s places, culture, and travel experiences.</p>
+            <p>SriLankan.travel exists to make planning a trip to Sri Lanka clearer, more inspiring, and more approachable. By highlighting destinations and experiences across the island, the platform helps travelers move from curiosity to confident planning - offering a meaningful introduction to Sri Lanka's places, culture, and travel experiences.</p>
           </div>
         </div>
       </section>

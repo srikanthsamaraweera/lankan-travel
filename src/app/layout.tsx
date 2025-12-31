@@ -40,6 +40,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const year = new Date().getFullYear();
+
   return (
     <html lang="en">
       <body
@@ -78,6 +80,13 @@ export default function RootLayout({
           </div>
         </header>
         {children}
+        <footer className="border-t border-[var(--border-soft)] bg-white/90">
+          <div className="mx-auto flex max-w-6xl items-center justify-center px-6 py-6 text-sm text-[var(--muted)] lg:px-10">
+            <span className="text-center">
+              © {year} Lankan.org — All rights reserved.
+            </span>
+          </div>
+        </footer>
       </body>
     </html>
   );
