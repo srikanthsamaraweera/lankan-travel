@@ -29,10 +29,9 @@ export default function AboutSlider({ images }: AboutSliderProps) {
 
   useEffect(() => {
     if (totalSlides <= 1) return undefined;
-    const timer = setInterval(
-      () => setActiveIndex((prev) => (prev + 1) % totalSlides),
-      SLIDE_INTERVAL_MS,
-    );
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % totalSlides);
+    }, SLIDE_INTERVAL_MS);
     return () => clearInterval(timer);
   }, [totalSlides]);
 
@@ -49,18 +48,18 @@ export default function AboutSlider({ images }: AboutSliderProps) {
       />
 
       <div className="relative h-[480px] sm:h-[500px] md:h-[460px]">
-        {slideImages.map((image, index) => (
-          <article
-            key={image + index.toString()}
-            className={`absolute inset-0 grid h-full items-stretch gap-6 transition-all duration-700 ease-out ${index === activeIndex
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-2 opacity-0"
-              }`}
-            aria-hidden={index !== activeIndex}
-          >
-            <div className="grid h-full gap-6 md:grid-cols-2">
-              <div className="relative">
-                <div className="absolute inset-4 overflow-hidden rounded-2xl bg-black/5 shadow-lg shadow-black/10">
+        <div className="grid h-full gap-6 md:grid-cols-2">
+          <div className="relative">
+            <div className="absolute inset-4 overflow-hidden rounded-2xl bg-black/5 shadow-lg shadow-black/10">
+              {slideImages.map((image, index) => (
+                <div
+                  key={image + index.toString()}
+                  className={`absolute inset-0 transition-opacity duration-700 ease-out ${index === activeIndex
+                      ? "opacity-100"
+                      : "pointer-events-none opacity-0"
+                    }`}
+                  aria-hidden={index !== activeIndex}
+                >
                   <Image
                     src={image}
                     alt="About slider"
@@ -73,25 +72,26 @@ export default function AboutSlider({ images }: AboutSliderProps) {
                     className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"
                     aria-hidden
                   />
-
                 </div>
-              </div>
+              ))}
 
-              <div className="flex flex-col justify-center gap-4 px-6 py-8 sm:px-10 sm:py-12">
-
-                <h2 className="font-[var(--font-heading)] text-3xl leading-tight text-foreground sm:text-4xl">
-                  About Srilankan.vacations
-                </h2>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-                  Coastlines · Hill Country · Culture · Journeys
-                </p>
-                <p className="max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base">
-                  A Travel Discovery Platform for Exploring Sri Lanka
-                </p>
-              </div>
             </div>
-          </article>
-        ))}
+          </div>
+
+          <div className="flex flex-col justify-center gap-4 px-6 py-8 sm:px-10 sm:py-12">
+
+
+            <h2 className="font-[var(--font-heading)] text-3xl leading-tight text-foreground sm:text-4xl">
+              About Srilankan.vacations
+            </h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
+              Coastlines - Hill Country - Culture - Journeys
+            </p>
+            <p className="max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base">
+              A Travel Discovery Platform for Exploring Sri Lanka
+            </p>
+          </div>
+        </div>
       </div>
 
       {totalSlides > 1 && (
