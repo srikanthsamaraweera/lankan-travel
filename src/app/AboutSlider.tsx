@@ -41,22 +41,22 @@ export default function AboutSlider({ images }: AboutSliderProps) {
     setActiveIndex((prev) => (prev + 1) % totalSlides);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-white/90 shadow-xl shadow-[var(--accent)]/10 backdrop-blur">
+    <div className="relative mx-auto w-full max-w-[calc(100vw-1.25rem)] overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-white/90 pb-12 shadow-xl shadow-[var(--accent)]/10 backdrop-blur sm:max-w-[calc(100vw-2.25rem)] md:max-w-none md:pb-0">
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent)]/6 via-white to-white"
         aria-hidden
       />
 
-      <div className="relative h-[480px] sm:h-[500px] md:h-[460px]">
-        <div className="grid h-full gap-6 md:grid-cols-2">
-          <div className="relative">
-            <div className="absolute inset-4 overflow-hidden rounded-2xl bg-black/5 shadow-lg shadow-black/10">
+      <div className="relative">
+        <div className="grid items-stretch gap-6 md:grid-cols-2">
+          <div className="order-2 relative min-h-[340px] sm:min-h-[400px] md:order-1 md:h-[460px] lg:h-[520px]">
+            <div className="absolute inset-4 overflow-hidden rounded-2xl bg-black/5 shadow-lg shadow-black/10 max-[375px]:left-1/2 max-[375px]:right-auto max-[375px]:w-[88vw] max-[375px]:max-w-[280px] max-[375px]:-translate-x-1/2 max-[320px]:w-[92vw] max-[320px]:max-w-[260px] max-[320px]:left-1/2 max-[320px]:right-auto max-[320px]:-translate-x-1/2">
               {slideImages.map((image, index) => (
                 <div
                   key={image + index.toString()}
                   className={`absolute inset-0 transition-opacity duration-700 ease-out ${index === activeIndex
-                      ? "opacity-100"
-                      : "pointer-events-none opacity-0"
+                    ? "opacity-100"
+                    : "pointer-events-none opacity-0"
                     }`}
                   aria-hidden={index !== activeIndex}
                 >
@@ -78,10 +78,10 @@ export default function AboutSlider({ images }: AboutSliderProps) {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center gap-4 px-6 py-8 sm:px-10 sm:py-12">
+          <div className="order-1 flex flex-col justify-center gap-4 px-6 py-8 sm:px-10 sm:py-12 md:order-2">
 
 
-            <h2 className="font-[var(--font-heading)] text-3xl leading-tight text-foreground sm:text-4xl">
+            <h2 className="font-[var(--font-heading)] max-[321px]:text-2xl text-3xl leading-tight text-foreground sm:text-4xl">
               About Srilankan.vacations
             </h2>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
@@ -104,8 +104,8 @@ export default function AboutSlider({ images }: AboutSliderProps) {
                 aria-label={`Go to slide ${index + 1}`}
                 onClick={() => setActiveIndex(index)}
                 className={`h-2.5 rounded-full transition-all duration-200 ${activeIndex === index
-                    ? "w-7 bg-[var(--accent)] shadow-sm shadow-[var(--accent)]/30"
-                    : "w-2.5 bg-[var(--muted)]/30 hover:bg-[var(--muted)]/50"
+                  ? "w-7 bg-[var(--accent)] shadow-sm shadow-[var(--accent)]/30"
+                  : "w-2.5 bg-[var(--muted)]/30 hover:bg-[var(--muted)]/50"
                   }`}
               />
             ))}
