@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
@@ -48,9 +49,17 @@ export default function RootLayout({
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-10">
             <Link
               href="/"
-              className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]"
+              className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]"
             >
-              Srilankan.vacations
+              <Image
+                src="/srilankan_vacations_logo.png"
+                alt="Srilankan.vacations logo"
+                width={44}
+                height={44}
+                className="rounded-full shadow-sm shadow-[var(--accent)]/20"
+                priority
+              />
+              <span>Srilankan.vacations</span>
             </Link>
             <nav className="flex items-center gap-3 text-sm font-semibold text-foreground">
               <Link
