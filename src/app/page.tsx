@@ -1,64 +1,291 @@
 import Image from "next/image";
+import PaginationClient from "./PaginationClient";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+type WPPost = {
+  id: number;
+  date: string;
+  link: string;
+  title?: { rendered?: string };
+  excerpt?: { rendered?: string };
+  content?: { rendered?: string };
+  _embedded?: {
+    ["wp:featuredmedia"]?: Array<{
+      source_url?: string;
+      alt_text?: string;
+      media_details?: {
+        sizes?: Record<string, { source_url?: string }>;
+      };
+    }>;
+  };
+};
+
+type TravelPost = {
+  id: number;
+  title: string;
+  link: string;
+  summary: string;
+  dateLabel: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
+type TravelFeed = {
+  posts: TravelPost[];
+  totalPages: number;
+  pageUsed: number;
+};
+
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+const POSTS_PER_PAGE = 18;
+const API_ENDPOINT = "https://lankan.org/wp-json/wp/v2/posts";
+
+async function getTravelPosts(page: number): Promise<TravelFeed> {
+  try {
+    const safePage = Math.max(1, page);
+    const response = await fetch(buildUrl(safePage), {
+      // Keep server-rendered, but refresh every 15 minutes to stay current.
+      cache: "no-store",
+      next: { revalidate: 900 },
+    });
+
+    if (!response.ok) {
+      if (response.status === 400 && safePage > 1) {
+        // If the requested page is now out of range, refetch the first page.
+        return getTravelPosts(1);
+      }
+      throw new Error(`Failed to fetch travel posts (${response.status})`);
+    }
+
+    const totalPages = parseTotalPages(response.headers);
+    const boundedPage =
+      totalPages > 0 ? Math.min(safePage, totalPages) : safePage;
+
+    // If the requested page exceeds the current total page count, refetch the last page.
+    if (boundedPage !== safePage) {
+      return getTravelPosts(boundedPage);
+    }
+
+    const data: WPPost[] = await response.json();
+    const posts = data
+      .map(mapPostToCard)
+      .filter((post): post is TravelPost => !!post);
+
+    return { posts, totalPages, pageUsed: boundedPage };
+  } catch (error) {
+    console.warn("[lankan-travel] Unable to load posts", error);
+    return { posts: [], totalPages: 1, pageUsed: 1 };
+  }
+}
+
+function buildUrl(page: number) {
+  return `${API_ENDPOINT}?categories=67&per_page=${POSTS_PER_PAGE}&_embed=1&page=${page}`;
+}
+
+function parseTotalPages(headers: Headers) {
+  return Number.parseInt(headers.get("X-WP-TotalPages") ?? "1", 10) || 1;
+}
+
+function mapPostToCard(post: WPPost): TravelPost | null {
+  if (!post?.id || !post.link) return null;
+
+  const title = toPlainText(post.title?.rendered ?? "").trim() || "Untitled post";
+  const summary = truncateWords(
+    toPlainText(post.excerpt?.rendered || post.content?.rendered || ""),
+    46,
+  );
+  const image = extractImage(post);
+
+  return {
+    id: post.id,
+    title,
+    link: post.link,
+    summary,
+    dateLabel: formatDate(post.date),
+    imageUrl: image?.url,
+    imageAlt: image?.alt || title,
+  };
+}
+
+function extractImage(post: WPPost) {
+  const media = post._embedded?.["wp:featuredmedia"]?.[0];
+  if (!media) return null;
+
+  const sizes = media.media_details?.sizes ?? {};
+  const preferredSize =
+    sizes?.medium_large?.source_url ||
+    sizes?.large?.source_url ||
+    sizes?.medium?.source_url;
+
+  return {
+    url: preferredSize || media.source_url,
+    alt: media.alt_text,
+  };
+}
+
+function toPlainText(html: string) {
+  const withoutTags = html.replace(/<[^>]+>/g, " ");
+  return decodeEntities(withoutTags).replace(/\s+/g, " ").trim();
+}
+
+function decodeEntities(text: string) {
+  return text
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&apos;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&#(\d+);/g, (_, code) =>
+      String.fromCharCode(Number.parseInt(code, 10)),
+    );
+}
+
+function truncateWords(text: string, wordLimit: number) {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length <= wordLimit) return text;
+  return `${words.slice(0, wordLimit).join(" ")}...`;
+}
+
+function formatDate(date: string) {
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(new Date(date));
+  } catch {
+    return "";
+  }
+}
+
+function getCurrentPage(pageParam: string | string[] | undefined) {
+  const value = Array.isArray(pageParam) ? pageParam[0] : pageParam;
+  const parsed = Number.parseInt(value ?? "1", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: Promise<SearchParams>;
+}) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const requestedPage = getCurrentPage(resolvedSearchParams?.page);
+  const { posts, totalPages, pageUsed } = await getTravelPosts(requestedPage);
+  const activePage = Math.min(Math.max(1, pageUsed), totalPages || 1);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen">
+      <section className="relative isolate overflow-hidden px-6 pb-16 pt-12 sm:pt-16 lg:px-10">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-10 top-6 h-48 w-48 rounded-full bg-[var(--accent)]/10 blur-3xl" />
+          <div className="absolute bottom-0 right-2 h-56 w-56 rounded-full bg-[var(--accent-strong)]/10 blur-3xl" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="relative mx-auto max-w-5xl space-y-6">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+            Srilankan.vacations by Lankan.org
+          </span>
+          <div className="space-y-4">
+            <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
+              Discover Sri Lanka Through Stories, Places, and Experiences
+            </h1>
+            <p className="max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+              Fresh picks straight from the Lankan.org travel desk, bringing you
+              destinations, experiences, and tips to plan your next island
+              escape.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 text-sm text-[var(--muted)]">
+            <span className="rounded-full bg-white/60 px-4 py-2 font-medium text-foreground shadow-sm shadow-[var(--accent)]/10">
+              {posts.length > 0 ? `${posts.length} stories curated` : "Travel feed"}
+            </span>
+            <span className="rounded-full bg-white/60 px-4 py-2 font-medium text-foreground shadow-sm shadow-[var(--accent)]/10">
+              Updated every few minutes
+            </span>
+          </div>
         </div>
+      </section>
+
+      <main className="relative z-10 mx-auto max-w-6xl px-6 pb-20 lg:px-10">
+        {posts.length === 0 ? (
+          <div className="rounded-3xl border border-[var(--border-soft)] bg-white/90 p-10 text-center shadow-sm">
+            <p className="text-lg font-semibold text-foreground">
+              Travel stories are loading
+            </p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              We couldn&apos;t reach lankan.org right now. Please refresh in a moment.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+              {posts.map((post) => (
+                <article
+                  key={post.id}
+                  className="group relative overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-white/95 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    {post.imageUrl ? (
+                      <Image
+                        src={post.imageUrl}
+                        alt={post.imageAlt || post.title}
+                        fill
+                        className="object-cover transition duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+                        priority={false}
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-[var(--accent)] to-[var(--accent-strong)] text-lg font-semibold uppercase tracking-[0.2em] text-white">
+                        Travel
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/60 via-black/40 to-transparent px-5 py-3 text-xs text-white">
+                      <span className="font-medium">Travel</span>
+                      {post.dateLabel && (
+                        <span className="text-white/80">{post.dateLabel}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex h-full flex-col gap-3 p-6">
+                    <a
+                      href={post.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-[var(--font-heading)] text-xl leading-7 text-foreground transition-colors hover:text-[var(--accent)]"
+                    >
+                      {post.title}
+                    </a>
+                    <p className="text-sm leading-6 text-[var(--muted)]">
+                      {post.summary}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between pt-2">
+                      <span className="rounded-full bg-[var(--accent)]/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[var(--accent)]">
+                        Read on
+                      </span>
+                      <a
+                        href={post.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)]"
+                      >
+                        Read more
+                        <span aria-hidden className="text-base">-&gt;</span>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <PaginationClient currentPage={activePage} totalPages={totalPages} />
+          </div>
+        )}
       </main>
     </div>
   );
