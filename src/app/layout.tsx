@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
+import HeaderNav from "./HeaderNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +49,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${poppins.variable} antialiased`}
       >
         <header className="sticky top-0 z-50 border-b border-[var(--border-soft)] bg-white/90 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-10">
+          <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
             <Link
               href="/"
               className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]"
@@ -63,20 +64,7 @@ export default function RootLayout({
               />
               <span>Srilankan.vacations</span>
             </Link>
-            <nav className="flex items-center gap-3 text-sm font-semibold text-foreground">
-              <Link
-                href="/"
-                className="rounded-full px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]"
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                className="rounded-full px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]"
-              >
-                About
-              </Link>
-            </nav>
+            <HeaderNav />
           </div>
         </header>
         {children}
