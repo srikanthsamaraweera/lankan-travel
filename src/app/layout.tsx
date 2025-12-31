@@ -28,6 +28,9 @@ export const metadata: Metadata = {
   title: "Lankan.org Travel Highlights",
   description:
     "Fresh travel stories from Lankan.org, curated for wanderers planning their next Sri Lankan journey.",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
