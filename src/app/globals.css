@@ -34,3 +34,10 @@ body {
 a {
   color: var(--accent);
 }
+
+button:hover,
+[type="button"]:hover,
+[type="submit"]:hover,
+[type="reset"]:hover {
+  cursor: pointer;
+}

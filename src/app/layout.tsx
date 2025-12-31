@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 
@@ -38,12 +40,53 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const year = new Date().getFullYear();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${poppins.variable} antialiased`}
       >
+        <header className="sticky top-0 z-50 border-b border-[var(--border-soft)] bg-white/90 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-10">
+            <Link
+              href="/"
+              className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]"
+            >
+              <Image
+                src="/srilankan_vacations_logo.png"
+                alt="Srilankan.vacations logo"
+                width={44}
+                height={44}
+                className="rounded-full shadow-sm shadow-[var(--accent)]/20"
+                priority
+              />
+              <span>Srilankan.vacations</span>
+            </Link>
+            <nav className="flex items-center gap-3 text-sm font-semibold text-foreground">
+              <Link
+                href="/"
+                className="rounded-full px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]"
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                className="rounded-full px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]"
+              >
+                About
+              </Link>
+            </nav>
+          </div>
+        </header>
         {children}
+        <footer className="border-t border-[var(--border-soft)] bg-white/90">
+          <div className="mx-auto flex max-w-6xl items-center justify-center px-6 py-6 text-sm text-[var(--muted)] lg:px-10">
+            <span className="text-center">
+              © {year} Lankan.org — All rights reserved.
+            </span>
+          </div>
+        </footer>
       </body>
     </html>
   );
