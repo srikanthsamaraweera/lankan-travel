@@ -1,5 +1,6 @@
 import Image from "next/image";
 import PaginationClient from "./PaginationClient";
+import HeroSlider from "./HeroSlider";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,7 @@ type WPPost = {
   };
 };
 
-type TravelPost = {
+export type TravelPost = {
   id: number;
   title: string;
   link: string;
@@ -43,10 +44,13 @@ type SearchParams = { [key: string]: string | string[] | undefined };
 const POSTS_PER_PAGE = 18;
 const API_ENDPOINT = "https://lankan.org/wp-json/wp/v2/posts";
 
-async function getTravelPosts(page: number): Promise<TravelFeed> {
+async function getTravelPosts(
+  page: number,
+  perPage = POSTS_PER_PAGE,
+): Promise<TravelFeed> {
   try {
     const safePage = Math.max(1, page);
-    const response = await fetch(buildUrl(safePage), {
+    const response = await fetch(buildUrl(safePage, perPage), {
       // Keep server-rendered, but refresh every 15 minutes to stay current.
       cache: "no-store",
       next: { revalidate: 900 },
@@ -55,7 +59,7 @@ async function getTravelPosts(page: number): Promise<TravelFeed> {
     if (!response.ok) {
       if (response.status === 400 && safePage > 1) {
         // If the requested page is now out of range, refetch the first page.
-        return getTravelPosts(1);
+        return getTravelPosts(1, perPage);
       }
       throw new Error(`Failed to fetch travel posts (${response.status})`);
     }
@@ -67,7 +71,7 @@ async function getTravelPosts(page: number): Promise<TravelFeed> {
 
     // If the requested page exceeds the current total page count, refetch the last page.
     if (boundedPage !== safePage) {
-      return getTravelPosts(boundedPage);
+      return getTravelPosts(boundedPage, perPage);
     }
 
     const data: WPPost[] = await response.json();
@@ -82,8 +86,8 @@ async function getTravelPosts(page: number): Promise<TravelFeed> {
   }
 }
 
-function buildUrl(page: number) {
-  return `${API_ENDPOINT}?categories=67&per_page=${POSTS_PER_PAGE}&_embed=1&page=${page}`;
+function buildUrl(page: number, perPage = POSTS_PER_PAGE) {
+  return `${API_ENDPOINT}?categories=67&per_page=${perPage}&_embed=1&page=${page}`;
 }
 
 function parseTotalPages(headers: Headers) {
@@ -180,8 +184,22 @@ export default async function Home({
 }) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const requestedPage = getCurrentPage(resolvedSearchParams?.page);
-  const { posts, totalPages, pageUsed, totalPosts } =
-    await getTravelPosts(requestedPage);
+  const showHero = requestedPage === 1;
+
+  const emptyFeed: TravelFeed = {
+    posts: [],
+    totalPages: 0,
+    pageUsed: 1,
+    totalPosts: 0,
+  };
+
+  const [heroFeed, mainFeed] = await Promise.all([
+    showHero ? getTravelPosts(1, 3) : Promise.resolve(emptyFeed),
+    getTravelPosts(requestedPage),
+  ]);
+
+  const { posts: heroPosts } = heroFeed;
+  const { posts, totalPages, pageUsed, totalPosts } = mainFeed;
   const activePage = Math.min(Math.max(1, pageUsed), totalPages || 1);
 
   return (
@@ -193,31 +211,33 @@ export default async function Home({
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
         </div>
 
-        <div className="relative mx-auto max-w-5xl space-y-6">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-            Srilankan.vacations by <a href="https://www.lankan.org">Lankan.org</a>
-          </span>
-          <div className="space-y-4">
-            <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
-              Travel Sri Lanka: Places to Visit, Experiences, and Travel Ideas
-            </h1>
-            <p className="max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-              Explore destinations, activities, and travel experiences across Sri Lanka — from hill country escapes and cultural landmarks to beaches, wildlife, and scenic journeys.
-
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3 text-sm text-[var(--muted)]">
-            <span className="rounded-full bg-white/60 px-4 py-2 font-medium text-foreground shadow-sm shadow-[var(--accent)]/10">
-              {totalPosts > 0
-                ? `${totalPosts} stories available`
-                : "Travel feed"}
+        <div className="relative mx-auto max-w-6xl space-y-10">
+          <div className="space-y-6">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+              Srilankan.vacations by <a href="https://www.lankan.org">Lankan.org</a>
             </span>
-
+            <div className="space-y-4">
+              <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
+                Travel Sri Lanka: Places to Visit, Experiences, and Travel Ideas
+              </h1>
+              <p className="max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+                Explore destinations, activities, and travel experiences across Sri Lanka - from hill country escapes and cultural landmarks to beaches, wildlife, and scenic journeys.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3 text-sm text-[var(--muted)]">
+              <span className="rounded-full bg-white/60 px-4 py-2 font-medium text-foreground shadow-sm shadow-[var(--accent)]/10">
+                {totalPosts > 0
+                  ? `${totalPosts} stories available`
+                  : "Travel feed"}
+              </span>
+            </div>
           </div>
+
+          {showHero && <HeroSlider posts={heroPosts} />}
         </div>
       </section>
 
-      <main className="relative z-10 mx-auto max-w-6xl px-6 pb-20 lg:px-10">
+      <main className="relative z-10 mx-auto max-w-6xl px-6 pb-20 lg:px-10 pt-12">
         {posts.length === 0 ? (
           <div className="rounded-3xl border border-[var(--border-soft)] bg-white/90 p-10 text-center shadow-sm">
             <p className="text-lg font-semibold text-foreground">
@@ -270,18 +290,16 @@ export default async function Home({
                     <p className="text-sm leading-6 text-[var(--muted)]">
                       {post.summary}
                     </p>
-                    <div className="mt-auto flex items-center justify-between pt-2">
-                      <span className="rounded-full bg-[var(--accent)]/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[var(--accent)]">
-                        Read on
-                      </span>
+                    <div className="flex pt-2">
                       <a
                         href={post.link}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)]"
+                        className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[var(--accent)]/30 transition hover:-translate-y-0.5 hover:bg-[var(--accent-strong)] hover:text-white"
+                        style={{ color: "#fff" }}
                       >
                         Read more
-                        <span aria-hidden className="text-base">-&gt;</span>
+                        <span aria-hidden className="text-base">&rarr;</span>
                       </a>
                     </div>
                   </div>
