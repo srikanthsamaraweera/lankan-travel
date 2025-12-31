@@ -35,6 +35,7 @@ type TravelFeed = {
   posts: TravelPost[];
   totalPages: number;
   pageUsed: number;
+  totalPosts: number;
 };
 
 type SearchParams = { [key: string]: string | string[] | undefined };
@@ -60,6 +61,7 @@ async function getTravelPosts(page: number): Promise<TravelFeed> {
     }
 
     const totalPages = parseTotalPages(response.headers);
+    const totalPosts = parseTotalPosts(response.headers);
     const boundedPage =
       totalPages > 0 ? Math.min(safePage, totalPages) : safePage;
 
@@ -73,10 +75,10 @@ async function getTravelPosts(page: number): Promise<TravelFeed> {
       .map(mapPostToCard)
       .filter((post): post is TravelPost => !!post);
 
-    return { posts, totalPages, pageUsed: boundedPage };
+    return { posts, totalPages, pageUsed: boundedPage, totalPosts };
   } catch (error) {
     console.warn("[lankan-travel] Unable to load posts", error);
-    return { posts: [], totalPages: 1, pageUsed: 1 };
+    return { posts: [], totalPages: 1, pageUsed: 1, totalPosts: 0 };
   }
 }
 
@@ -86,6 +88,10 @@ function buildUrl(page: number) {
 
 function parseTotalPages(headers: Headers) {
   return Number.parseInt(headers.get("X-WP-TotalPages") ?? "1", 10) || 1;
+}
+
+function parseTotalPosts(headers: Headers) {
+  return Number.parseInt(headers.get("X-WP-Total") ?? "0", 10) || 0;
 }
 
 function mapPostToCard(post: WPPost): TravelPost | null {
@@ -174,7 +180,8 @@ export default async function Home({
 }) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const requestedPage = getCurrentPage(resolvedSearchParams?.page);
-  const { posts, totalPages, pageUsed } = await getTravelPosts(requestedPage);
+  const { posts, totalPages, pageUsed, totalPosts } =
+    await getTravelPosts(requestedPage);
   const activePage = Math.min(Math.max(1, pageUsed), totalPages || 1);
 
   return (
@@ -188,25 +195,24 @@ export default async function Home({
 
         <div className="relative mx-auto max-w-5xl space-y-6">
           <span className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-            Srilankan.vacations by Lankan.org
+            Srilankan.vacations by <a href="https://www.lankan.org">Lankan.org</a>
           </span>
           <div className="space-y-4">
             <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
-              Discover Sri Lanka Through Stories, Places, and Experiences
+              Travel Sri Lanka: Places to Visit, Experiences, and Travel Ideas
             </h1>
             <p className="max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-              Fresh picks straight from the Lankan.org travel desk, bringing you
-              destinations, experiences, and tips to plan your next island
-              escape.
+              Explore destinations, activities, and travel experiences across Sri Lanka — from hill country escapes and cultural landmarks to beaches, wildlife, and scenic journeys.
+
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm text-[var(--muted)]">
             <span className="rounded-full bg-white/60 px-4 py-2 font-medium text-foreground shadow-sm shadow-[var(--accent)]/10">
-              {posts.length > 0 ? `${posts.length} stories curated` : "Travel feed"}
+              {totalPosts > 0
+                ? `${totalPosts} stories available`
+                : "Travel feed"}
             </span>
-            <span className="rounded-full bg-white/60 px-4 py-2 font-medium text-foreground shadow-sm shadow-[var(--accent)]/10">
-              Updated every few minutes
-            </span>
+
           </div>
         </div>
       </section>
