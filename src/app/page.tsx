@@ -257,9 +257,8 @@ export default async function Home({
       </section>}
 
       <section
-        className={`relative isolate overflow-hidden px-6 lg:px-10 ${
-          activePage === 1 ? "pb-16 pt-12 sm:pt-16" : "pb-0 pt-0 sm:pt-0"
-        }`}
+        className={`relative isolate overflow-hidden px-6 lg:px-10 ${activePage === 1 ? "pb-16 pt-12 sm:pt-16" : "pb-0 pt-0 sm:pt-0"
+          }`}
       >
         <div className="relative mx-auto max-w-6xl space-y-10">
           {showHero && <HeroSlider posts={heroPosts} />}
@@ -278,6 +277,7 @@ export default async function Home({
           </div>
         ) : (
           <div className="space-y-8">
+            {activePage != 1 && <PaginationClient currentPage={activePage} totalPages={totalPages} />}
             <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
               {posts.map((post) => (
                 <article
