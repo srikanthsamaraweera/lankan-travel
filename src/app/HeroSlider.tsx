@@ -57,8 +57,8 @@ export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
           <article
             key={post.id}
             className={`absolute inset-0 grid h-full items-stretch gap-6 pb-24 sm:pb-20 transition-all duration-700 ease-out ${index === activeIndex
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-2 opacity-0"
+              ? "translate-y-0 opacity-100"
+              : "pointer-events-none translate-y-2 opacity-0"
               }`}
             aria-hidden={index !== activeIndex}
           >
@@ -112,9 +112,7 @@ export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
                       &rarr;
                     </span>
                   </a>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted)] ">
-                    Slide {activeIndex + 1} of {slides.length}
-                  </span>
+
                 </div>
               </div>
 
@@ -138,9 +136,7 @@ export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
                     className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"
                     aria-hidden
                   />
-                  <div className="absolute bottom-4 left-4 rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--accent)] shadow-sm shadow-black/10">
-                    Feature image
-                  </div>
+
                 </div>
               </div>
             </div>
