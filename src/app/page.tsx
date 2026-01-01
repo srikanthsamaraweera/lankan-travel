@@ -213,8 +213,10 @@ export default async function Home({
 
         <div className="relative mx-auto max-w-6xl space-y-10">
           <div className="space-y-6">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-              Srilankan.vacations by <a href="https://www.lankan.org">Lankan.org</a>
+            <span className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+              Srilankan.vacations by
+              <br className="hidden max-[349px]:block" />
+              <a href="https://www.lankan.org">Lankan.org</a>
             </span>
             <div className="space-y-4">
               <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
