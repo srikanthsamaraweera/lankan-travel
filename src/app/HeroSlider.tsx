@@ -47,11 +47,6 @@ export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-white/80 shadow-2xl shadow-[var(--accent)]/10 ring-1 ring-white/60 backdrop-blur pb-5">
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent)]/8 via-white to-white"
-        aria-hidden
-      />
-
       <div className="relative h-[620px] sm:h-[580px] md:h-[540px]">
         {slides.map((post, index) => (
           <article
