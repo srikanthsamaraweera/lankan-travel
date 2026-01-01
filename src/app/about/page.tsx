@@ -1,6 +1,7 @@
 import path from "path";
 import { promises as fs } from "fs";
 import AboutSlider from "../AboutSlider";
+import AboutHeroImages from "../AboutHeroImages";
 
 export const dynamic = "force-dynamic";
 
@@ -26,14 +27,50 @@ export default async function AboutPage() {
   const aboutImages = await getAboutSliderImages();
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#F7FAFD] ">
+      <section className="w-full bg-[#040E27] text-white">
+        <div className="mx-auto max-w-6xl px-6 py-14 lg:px-10">
+          <div className="grid items-center gap-10 md:grid-cols-[7fr_3fr]">
+            <div className="space-y-6 xs:w-[100%] w-[80%]" id="main-top-desc">
+              <span className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[var(--accent)]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-sm shadow-black/20">
+                Srilankan.vacations by
+                <br className="hidden max-[349px]:block" />
+                <a
+                  href="https://www.lankan.org"
+                  className="text-white underline underline-offset-4 !text-white hover:text-white focus:text-white"
+                >
+                  Lankan.org
+                </a>
+              </span>
+              <div className="space-y-4">
+                <h1 className="font-[var(--font-heading)] xs:text-4xl text-3xl leading-tight text-white sm:text-5xl lg:text-6xl">
+                  About Srilankan.vacations
+                </h1>
+                <p className="max-w-3xl text-base leading-relaxed text-white/80 sm:text-lg">
+                  A Travel Discovery Platform for Exploring Sri Lanka
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3 text-sm text-white/80">
+                <span className="rounded-full bg-[var(--accent)]/80 px-4 py-2 font-medium text-white shadow-sm shadow-black/20">
+                  Coastlines - Hill Country - Culture - Journeys
+                </span>
+              </div>
+            </div>
+
+            <div className="relative hidden md:block">
+              <AboutHeroImages images={aboutImages} />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="relative isolate overflow-hidden px-6 pb-20 pt-14 sm:pt-16 lg:px-10">
         <div className="relative mx-auto max-w-5xl space-y-10">
 
 
-          <AboutSlider images={aboutImages} />
 
-          <div className="space-y-6 rounded-3xl border border-[var(--border-soft)] bg-white/90 p-8 shadow-md shadow-[var(--accent)]/5 backdrop-blur">
+
+          <div className="space-y-6 rounded-3xl border border-[var(--border-soft)] bg-white/90 md:p-20 p-8 shadow-md shadow-[var(--accent)]/5 backdrop-blur">
             <p >
               SriLankan.travel is a destination discovery and travel inspiration platform created for people planning a visit to Sri Lanka. The site is designed to help travelers understand what to expect, where to go, and what experiences define the island before they arrive.
             </p>
