@@ -42,11 +42,6 @@ export default function AboutSlider({ images }: AboutSliderProps) {
 
   return (
     <div className="relative mx-auto w-full max-w-[calc(100vw-1.25rem)] overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-white/90 pb-12 shadow-xl shadow-[var(--accent)]/10 backdrop-blur sm:max-w-[calc(100vw-2.25rem)] md:max-w-none md:pb-0">
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent)]/6 via-white to-white"
-        aria-hidden
-      />
-
       <div className="relative">
         <div className="grid items-stretch gap-6 md:grid-cols-2">
           <div className="order-2 relative min-h-[340px] sm:min-h-[400px] md:order-1 md:h-[460px] lg:h-[520px]">

@@ -204,37 +204,40 @@ export default async function Home({
 
   return (
     <div className="min-h-screen">
-      <section className="relative isolate overflow-hidden px-6 pb-16 pt-12 sm:pt-16 lg:px-10">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-10 top-6 h-48 w-48 rounded-full bg-[var(--accent)]/10 blur-3xl" />
-          <div className="absolute bottom-0 right-2 h-56 w-56 rounded-full bg-[var(--accent-strong)]/10 blur-3xl" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
-        </div>
-
-        <div className="relative mx-auto max-w-6xl space-y-10">
-          <div className="space-y-6">
-            <span className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+      <section className="w-full bg-[#040E27] text-white">
+        <div className="mx-auto max-w-6xl px-6 py-14 lg:px-10">
+          <div className="space-y-6" id="main-top-desc">
+            <span className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[var(--accent)]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-sm shadow-black/20">
               Srilankan.vacations by
               <br className="hidden max-[349px]:block" />
-              <a href="https://www.lankan.org">Lankan.org</a>
+              <a
+                href="https://www.lankan.org"
+                className="text-white underline underline-offset-4 !text-white hover:text-white focus:text-white"
+              >
+                Lankan.org
+              </a>
             </span>
             <div className="space-y-4">
-              <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
+              <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
                 Travel Sri Lanka: Places to Visit, Experiences, and Travel Ideas
               </h1>
-              <p className="max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+              <p className="max-w-3xl text-base leading-relaxed text-white/80 sm:text-lg">
                 Explore destinations, activities, and travel experiences across Sri Lanka - from hill country escapes and cultural landmarks to beaches, wildlife, and scenic journeys.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 text-sm text-[var(--muted)]">
-              <span className="rounded-full bg-white/60 px-4 py-2 font-medium text-foreground shadow-sm shadow-[var(--accent)]/10">
+            <div className="flex flex-wrap gap-3 text-sm text-white/80">
+              <span className="rounded-full bg-[var(--accent)]/80 px-4 py-2 font-medium text-white shadow-sm shadow-black/20">
                 {totalPosts > 0
                   ? `${totalPosts} stories available`
                   : "Travel feed"}
               </span>
             </div>
           </div>
+        </div>
+      </section>
 
+      <section className="relative isolate overflow-hidden px-6 pb-16 pt-12 sm:pt-16 lg:px-10">
+        <div className="relative mx-auto max-w-6xl space-y-10">
           {showHero && <HeroSlider posts={heroPosts} />}
         </div>
       </section>

@@ -26,14 +26,8 @@ export default async function AboutPage() {
   const aboutImages = await getAboutSliderImages();
 
   return (
-    <main className="min-h-screen bg-white/40">
+    <main className="min-h-screen bg-white">
       <section className="relative isolate overflow-hidden px-6 pb-20 pt-14 sm:pt-16 lg:px-10">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-[var(--accent)]/10 blur-3xl" />
-          <div className="absolute -right-10 bottom-4 h-64 w-64 rounded-full bg-[var(--accent-strong)]/10 blur-3xl" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
-        </div>
-
         <div className="relative mx-auto max-w-5xl space-y-10">
 
 
