@@ -206,31 +206,50 @@ export default async function Home({
     <div className="min-h-screen">
       <section className="w-full bg-[#040E27] text-white">
         <div className="mx-auto max-w-6xl px-6 py-14 lg:px-10">
-          <div className="space-y-6" id="main-top-desc">
-            <span className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[var(--accent)]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-sm shadow-black/20">
-              Srilankan.vacations by
-              <br className="hidden max-[349px]:block" />
-              <a
-                href="https://www.lankan.org"
-                className="text-white underline underline-offset-4 !text-white hover:text-white focus:text-white"
-              >
-                Lankan.org
-              </a>
-            </span>
-            <div className="space-y-4">
-              <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
-                Travel Sri Lanka: Places to Visit, Experiences, and Travel Ideas
-              </h1>
-              <p className="max-w-3xl text-base leading-relaxed text-white/80 sm:text-lg">
-                Explore destinations, activities, and travel experiences across Sri Lanka - from hill country escapes and cultural landmarks to beaches, wildlife, and scenic journeys.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3 text-sm text-white/80">
-              <span className="rounded-full bg-[var(--accent)]/80 px-4 py-2 font-medium text-white shadow-sm shadow-black/20">
-                {totalPosts > 0
-                  ? `${totalPosts} stories available`
-                  : "Travel feed"}
+          <div className="grid items-center gap-10 md:grid-cols-[7fr_3fr]">
+            <div className="space-y-6" id="main-top-desc">
+              <span className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[var(--accent)]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-sm shadow-black/20">
+                Srilankan.vacations by
+                <br className="hidden max-[349px]:block" />
+                <a
+                  href="https://www.lankan.org"
+                  className="text-white underline underline-offset-4 !text-white hover:text-white focus:text-white"
+                >
+                  Lankan.org
+                </a>
               </span>
+              <div className="space-y-4">
+                <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
+                  Travel Sri Lanka: Places to Visit, Experiences, and Travel Ideas
+                </h1>
+                <p className="max-w-3xl text-base leading-relaxed text-white/80 sm:text-lg">
+                  Explore destinations, activities, and travel experiences across Sri Lanka - from hill country escapes and cultural landmarks to beaches, wildlife, and scenic journeys.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3 text-sm text-white/80">
+                <span className="rounded-full bg-[var(--accent)]/80 px-4 py-2 font-medium text-white shadow-sm shadow-black/20">
+                  {totalPosts > 0
+                    ? `${totalPosts} stories available`
+                    : "Travel feed"}
+                </span>
+              </div>
+            </div>
+
+            <div className="relative hidden md:block">
+              <div className="relative h-72 overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-2xl shadow-black/30 sm:h-80 md:h-96 lg:h-[420px]">
+                <Image
+                  src="/aboutslider/elephant_babies.jpg"
+                  alt="Elephant calves walking together"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 520px"
+                  priority
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"
+                  aria-hidden
+                />
+              </div>
             </div>
           </div>
         </div>
