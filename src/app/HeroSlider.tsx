@@ -8,22 +8,23 @@ import type { TravelPost } from "./page";
 const SLIDE_INTERVAL_MS = 6500;
 
 export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
-  const slides = useMemo(() => posts.slice(0, 3), [posts]);
+  const slides = useMemo(() => posts.slice(0, 5), [posts]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     setActiveIndex(0);
   }, [slides.length]);
 
   useEffect(() => {
-    if (slides.length <= 1) return undefined;
+    if (slides.length <= 1 || isPaused) return undefined;
 
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % slides.length);
     }, SLIDE_INTERVAL_MS);
 
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, isPaused]);
 
   if (slides.length === 0) {
     return (
@@ -44,6 +45,7 @@ export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
     setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length);
   const handleNext = () =>
     setActiveIndex((prev) => (prev + 1) % slides.length);
+  const togglePause = () => setIsPaused((prev) => !prev);
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-white/80 shadow-2xl shadow-[var(--accent)]/10 ring-1 ring-white/60 backdrop-blur pb-5">
@@ -112,26 +114,23 @@ export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
               </div>
 
               <div className="relative">
-                <div className="absolute inset-4 overflow-hidden rounded-2xl bg-black/5 shadow-lg shadow-black/10">
+                <div className="absolute inset-4 overflow-hidden rounded-2xl   ">
                   {post.imageUrl ? (
                     <Image
                       src={post.imageUrl}
                       alt={post.imageAlt || post.title}
                       fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                      className="object-scale-down"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 800px"
+                      quality={100}
                       priority
+
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center bg-gradient-to-br from-[var(--accent)] to-[var(--accent-strong)] text-xl font-bold uppercase tracking-[0.25em] text-white">
                       Travel
                     </div>
                   )}
-                  <div
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"
-                    aria-hidden
-                  />
-
                 </div>
               </div>
             </div>
@@ -157,6 +156,18 @@ export default function HeroSlider({ posts }: { posts: TravelPost[] }) {
           </div>
 
           <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={togglePause}
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold transition ${isPaused
+                ? "border-[var(--border-soft)] bg-white text-[var(--accent)] shadow-sm hover:-translate-y-0.5 hover:border-transparent hover:bg-[var(--accent)]/10"
+                : "border-[var(--border-soft)] bg-white/90 text-[var(--muted)] shadow-sm hover:-translate-y-0.5 hover:border-transparent hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]"
+                }`}
+              aria-pressed={isPaused}
+              aria-label={isPaused ? "Play slides" : "Pause slides"}
+            >
+              {isPaused ? "▶" : "❚❚"}
+            </button>
             <button
               type="button"
               onClick={handlePrev}
