@@ -194,7 +194,7 @@ export default async function Home({
   };
 
   const [heroFeed, mainFeed] = await Promise.all([
-    showHero ? getTravelPosts(1, 3) : Promise.resolve(emptyFeed),
+    showHero ? getTravelPosts(1, 5) : Promise.resolve(emptyFeed),
     getTravelPosts(requestedPage),
   ]);
 
