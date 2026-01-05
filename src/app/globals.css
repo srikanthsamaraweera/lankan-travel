@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F7FAFD;
-  --foreground: #111111;
-  --accent: #bf283b;
-  --accent-strong: #e61e37;
-  --muted: #54595f;
-  --card: #ffffff;
-  --border-soft: #e5eaed;
+  --background: #f6f1e7;
+  --foreground: #0e0c0a;
+  --accent: #f6c400;
+  --accent-strong: #d39a00;
+  --muted: #4c463c;
+  --card: #fffdf6;
+  --border-soft: #e3d7c5;
 }
 
 @theme inline {
@@ -18,8 +18,8 @@
   --color-muted: var(--muted);
   --font-sans: var(--font-roboto), var(--font-geist-sans), ui-sans-serif,
     system-ui, -apple-system, sans-serif;
-  --font-heading: var(--font-poppins), var(--font-roboto), ui-sans-serif,
-    system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-playfair), var(--font-poppins), var(--font-roboto),
+    ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -30,7 +30,13 @@ body {
 }
 
 a {
-  color: var(--accent);
+  color: var(--foreground);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent-strong);
 }
 
 button:hover,
@@ -38,4 +44,21 @@ button:hover,
 [type="submit"]:hover,
 [type="reset"]:hover {
   cursor: pointer;
+}
+
+@keyframes hero-blink {
+  0%,
+  25% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+.hero-scroll-indicator {
+  animation: hero-blink 1.4s ease-in-out infinite;
 }

@@ -205,7 +205,7 @@ export default async function Home({
   return (
     <div className="min-h-screen !bg-[#F7FAFD]">
 
-      {activePage == 1 && <section className="w-full bg-[#040E27] text-white">
+      {/* {activePage == 1 && <section className="w-full bg-[#040E27] text-white">
         <div className="mx-auto max-w-6xl px-6 py-14 lg:px-10">
           <div className="grid items-center gap-10 md:grid-cols-[7fr_3fr]">
             <div className="space-y-6" id="main-top-desc">
@@ -254,13 +254,13 @@ export default async function Home({
             </div>
           </div>
         </div>
-      </section>}
+      </section>} */}
 
       <section
-        className={`relative isolate overflow-hidden px-6 lg:px-10 ${activePage === 1 ? "pb-16 pt-12 sm:pt-16" : "pb-0 pt-0 sm:pt-0"
+        className={`relative isolate overflow-hidden bg-black ${activePage === 1 ? "pb-0 pt-0 sm:pt-0" : "pb-0 pt-0 sm:pt-0"
           }`}
       >
-        <div className="relative mx-auto max-w-6xl space-y-10">
+        <div className="relative mx-auto  space-y-10">
           {showHero && <HeroSlider posts={heroPosts} />}
         </div>
       </section>

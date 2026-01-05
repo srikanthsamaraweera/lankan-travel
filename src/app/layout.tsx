@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Geist, Geist_Mono, Poppins, Roboto } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Playfair_Display,
+  Poppins,
+  Roboto,
+} from "next/font/google";
 import "./globals.css";
 import HeaderNav from "./HeaderNav";
 
@@ -27,6 +33,12 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+const playfair = Playfair_Display({
+  weight: ["600", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
+
 export const metadata: Metadata = {
   title: "Lankan.org Travel Highlights",
   description:
@@ -46,13 +58,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${poppins.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${poppins.variable} ${playfair.variable} antialiased`}
       >
         <header className="sticky top-0 z-50 border-b border-[var(--border-soft)] bg-white/90 backdrop-blur">
           <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
             <Link
               href="/"
-              className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]"
+              className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-foreground transition-colors hover:text-[var(--accent-strong)]"
             >
               <Image
                 src="/srilankan_vacations_logo.png"
