@@ -41,6 +41,29 @@ type TravelFeed = {
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
+const faqItems = [
+  {
+    question: "What is the best time to visit Sri Lanka?",
+    answer:
+      "Sri Lanka is a year-round destination, but it depends on where you go. For the South and West coasts (Galle, Mirissa, Colombo), the best time is December to March. If you are heading to the East Coast (Arugam Bay, Trincomalee), aim for May to September.",
+  },
+  {
+    question: "Do I need a visa to enter Sri Lanka?",
+    answer:
+      "Yes, most travelers need an ETA (Electronic Travel Authorization). You should apply online via the official eta.gov.lk portal before you arrive. It usually takes 24-48 hours to process.",
+  },
+  {
+    question: "How many days do I need for a Sri Lanka trip?",
+    answer:
+      "We recommend a minimum of 10 to 14 days. This gives you enough time to explore the Cultural Triangle (Sigiriya/Dambulla), take the scenic train to Ella, and relax on the southern beaches without rushing.",
+  },
+  {
+    question: "Is Sri Lanka safe for tourists right now?",
+    answer:
+      "Yes, Sri Lanka is generally very safe for tourists. Like any destination, exercise standard precautions, but the tourist areas are welcoming and secure.",
+  },
+];
+
 const POSTS_PER_PAGE = 18;
 const API_ENDPOINT = "https://lankan.org/wp-json/wp/v2/posts";
 
@@ -201,6 +224,18 @@ export default async function Home({
   const { posts: heroPosts } = heroFeed;
   const { posts, totalPages, pageUsed, totalPosts } = mainFeed;
   const activePage = Math.min(Math.max(1, pageUsed), totalPages || 1);
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
 
   return (
     <div className="min-h-screen !bg-[#F7FAFD]">
@@ -582,6 +617,57 @@ export default async function Home({
             </div>
           </div>
         </div>
+      </section>
+      <section id="faqSection" className="relative overflow-hidden bg-[#040E27] py-16 text-white">
+        <div
+          className="pointer-events-none absolute inset-0 "
+          aria-hidden
+        />
+
+        <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+          <span className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[var(--accent)]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-sm shadow-black/20">
+            FAQ / Travel Basics
+          </span>
+          <div className="flex flex-col gap-3">
+
+
+            <h3 className="font-[var(--font-heading)] text-3xl leading-tight sm:text-4xl">
+              Answers to the most asked Sri Lanka travel questions
+            </h3>
+            <p className="text-sm text-white/80">
+              Quick guidance on timing, visas, trip length, and safety—kept concise for easy planning.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {faqItems.map((item, index) => (
+              <div
+                key={item.question}
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/20 transition hover:-translate-y-1 hover:border-[var(--accent)]/40"
+              >
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-[var(--accent)]/10 opacity-0 transition duration-300 group-hover:opacity-100"
+                  aria-hidden
+                />
+                <div className="relative flex items-start gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="space-y-2">
+                    <h4 className="font-[var(--font-heading)] text-lg leading-snug text-white">
+                      {item.question}
+                    </h4>
+                    <p className="text-sm leading-6 text-white/80">{item.answer}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
       </section>
     </div>
   );
