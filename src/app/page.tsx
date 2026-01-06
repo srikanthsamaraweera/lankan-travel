@@ -205,7 +205,7 @@ export default async function Home({
   return (
     <div className="min-h-screen !bg-[#F7FAFD]">
 
-      {activePage == 1 && <section className="w-full bg-[#040E27] text-white">
+      {activePage == 1 && <section className="relative w-full bg-[#040E27] text-white">
         <div className="mx-auto max-w-6xl px-6 py-14 lg:px-10">
           <div className="grid items-center gap-10 md:grid-cols-[7fr_3fr]">
             <div className="space-y-6" id="main-top-desc">
@@ -221,10 +221,10 @@ export default async function Home({
               </span>
               <div className="space-y-4">
                 <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
-                  Travel Sri Lanka: Places to Visit, Experiences, and Travel Ideas
+                  Discover the Wonder of Asia: Your Ultimate Sri Lanka Travel Guide
                 </h1>
                 <p className="max-w-3xl text-base leading-relaxed text-white/80 sm:text-lg">
-                  Explore destinations, activities, and travel experiences across Sri Lanka - from hill country escapes and cultural landmarks to beaches, wildlife, and scenic journeys.
+                  Welcome to travel.lankan.org, your premier resource for exploring the "Pearl of the Indian Ocean." Whether you are planning a two-week itinerary through the misty tea hills of Ella or looking for the best surf spots in Arugam Bay, our curated guide covers every corner of this tropical paradise. As a dedicated travel hub, we move beyond the headlines to bring you practical, on-the-ground advice for your 2026 adventure.
                 </p>
               </div>
               <div className="flex flex-wrap gap-3 text-sm text-white/80">
@@ -254,9 +254,154 @@ export default async function Home({
             </div>
           </div>
         </div>
+        <a
+          href="#feature-hero"
+          className="group absolute right-4  inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-2 text-white shadow-lg shadow-black/40 transition hover:translate-x-1 hover:border-[var(--accent)] hover:bg-[var(--accent)]/20 sm:top-1/2 sm:-translate-y-1/2 sm:flex-col sm:gap-1 sm:px-3 sm:py-3"
+        >
+          <span className="text-[10px] uppercase tracking-[0.28em] sm:hidden">
+            Scroll
+          </span>
+          <span className="text-2xl leading-none scroll-teaser__arrow group-hover:text-[var(--accent)]">
+            &darr;
+          </span>
+        </a>
       </section>}
 
+      {activePage === 1 && (<section className="relative overflow-hidden bg-white/80 py-16 text-black">
+        <div
+          className="pointer-events-none absolute inset-0 "
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -left-20 top-10 h-48 w-48 rounded-full bg-[var(--accent)]/10 blur-3xl"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="space-y-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
+                Plan with confidence
+              </p>
+              <h2 className="font-[var(--font-heading)] text-3xl leading-tight text-foreground sm:text-4xl">
+                Sri Lanka, curated for curious travelers
+              </h2>
+              <p className="text-base leading-relaxed text-[var(--muted)]">
+                Sri Lanka is a land of staggering diversity. From misty tea hills to coral-fringed
+                beaches, we gather the intel that lets you move like a local with less guesswork and
+                more memorable journeys.
+              </p>
+              <p className="text-base leading-relaxed text-[var(--muted)]">
+                Planning a trip can be overwhelming, but we keep it simple. Browse our latest stories,
+                expert reviews, and hidden gems below to start crafting your dream vacation.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="#feature-hero"
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold !text-white shadow-lg shadow-[var(--accent)]/30 transition hover:-translate-y-0.5 hover:bg-[var(--accent-strong)]"
+                >
+                  Browse stories
+                  <span aria-hidden className="text-base">&rarr;</span>
+                </a>
+                <a
+                  href="#main-top-desc"
+                  className="inline-flex items-center gap-2 rounded-full border border-[var(--border-soft)] bg-white/70 px-5 py-3 text-sm font-semibold text-[var(--accent)] shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--accent)]/40 hover:bg-white"
+                >
+                  See why to visit
+                </a>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="group relative overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-white/90 p-5 shadow-lg shadow-black/5 transition hover:-translate-y-1 hover:border-[var(--accent)]/40">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/10 via-transparent to-[var(--accent-strong)]/10 opacity-0 transition duration-300 group-hover:opacity-100"
+                  aria-hidden
+                />
+                <div className="relative flex items-start gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)]/10 text-sm font-semibold text-[var(--accent)]">
+                    01
+                  </span>
+                  <div className="space-y-2">
+                    <h3 className="font-[var(--font-heading)] text-lg text-foreground">
+                      Cultural Heritage
+                    </h3>
+                    <p className="text-sm leading-6 text-[var(--muted)]">
+                      Explore the ancient kings&apos; land in the Cultural Triangle, from Sigiriya to
+                      the sacred temples of Kandy.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-white/90 p-5 shadow-lg shadow-black/5 transition hover:-translate-y-1 hover:border-[var(--accent)]/40">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/10 via-transparent to-[var(--accent-strong)]/10 opacity-0 transition duration-300 group-hover:opacity-100"
+                  aria-hidden
+                />
+                <div className="relative flex items-start gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)]/10 text-sm font-semibold text-[var(--accent)]">
+                    02
+                  </span>
+                  <div className="space-y-2">
+                    <h3 className="font-[var(--font-heading)] text-lg text-foreground">
+                      Pristine Beaches
+                    </h3>
+                    <p className="text-sm leading-6 text-[var(--muted)]">
+                      Swim, surf, and unwind from Mirissa&apos;s golden south to the untouched sands of
+                      the East Coast.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-white/90 p-5 shadow-lg shadow-black/5 transition hover:-translate-y-1 hover:border-[var(--accent)]/40">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/10 via-transparent to-[var(--accent-strong)]/10 opacity-0 transition duration-300 group-hover:opacity-100"
+                  aria-hidden
+                />
+                <div className="relative flex items-start gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)]/10 text-sm font-semibold text-[var(--accent)]">
+                    03
+                  </span>
+                  <div className="space-y-2">
+                    <h3 className="font-[var(--font-heading)] text-lg text-foreground">
+                      Wildlife Safaris
+                    </h3>
+                    <p className="text-sm leading-6 text-[var(--muted)]">
+                      Spot leopards in Yala and witness the great elephant gathering with practical
+                      timing tips.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-white/90 p-5 shadow-lg shadow-black/5 transition hover:-translate-y-1 hover:border-[var(--accent)]/40">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/10 via-transparent to-[var(--accent-strong)]/10 opacity-0 transition duration-300 group-hover:opacity-100"
+                  aria-hidden
+                />
+                <div className="relative flex items-start gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)]/10 text-sm font-semibold text-[var(--accent)]">
+                    04
+                  </span>
+                  <div className="space-y-2">
+                    <h3 className="font-[var(--font-heading)] text-lg text-foreground">
+                      Travel Logistics
+                    </h3>
+                    <p className="text-sm leading-6 text-[var(--muted)]">
+                      Up-to-date guidance on visas, airport transfers, and the iconic Kandy to Ella
+                      train journey.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>)}
+
       <section
+        id="feature-hero"
         className={`relative isolate overflow-hidden px-6 lg:px-10 ${activePage === 1 ? "pb-16 pt-12 sm:pt-16" : "pb-0 pt-0 sm:pt-0"
           }`}
       >
@@ -340,6 +485,104 @@ export default async function Home({
           </div>
         )}
       </main>
+      <section id="usefulLinks" className="bg-white/80 py-14">
+        <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-white/95 shadow-md shadow-black/5">
+            <div className="border-b border-[var(--border-soft)] bg-[#F7FAFD]/80 px-6 py-5 lg:px-10">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
+                Official Travel Resources
+              </p>
+              <h3 className="font-[var(--font-heading)] text-2xl text-foreground">
+                Essential links for safe, reliable trip planning
+              </h3>
+              <p className="text-sm text-[var(--muted)]">
+                Trusted government and tourism sites, opened in a new tab so you stay on travel.lankan.org.
+              </p>
+            </div>
+            <div className="grid gap-4 px-6 py-6 sm:grid-cols-2 lg:px-10 lg:py-8">
+              <a
+                href="https://eta.gov.lk"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group flex flex-col gap-2 rounded-2xl border border-[var(--border-soft)] bg-white/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--accent)]/50 hover:shadow-lg"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
+                  Visa / ETA
+                </span>
+                <span className="font-[var(--font-heading)] text-lg text-foreground">
+                  Electronic Travel Authorization (eta.gov.lk)
+                </span>
+                <p className="text-sm leading-6 text-[var(--muted)]">
+                  The only official visa application site for Sri Lanka. Avoid third-party fees and scams.
+                </p>
+                <span className="text-sm font-semibold text-[var(--accent)] transition group-hover:translate-x-1">
+                  Open resource &rarr;
+                </span>
+              </a>
+
+              <a
+                href="https://www.srilanka.travel"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group flex flex-col gap-2 rounded-2xl border border-[var(--border-soft)] bg-white/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--accent)]/50 hover:shadow-lg"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
+                  Official Tourism
+                </span>
+                <span className="font-[var(--font-heading)] text-lg text-foreground">
+                  Sri Lanka Tourism Promotion Bureau
+                </span>
+                <p className="text-sm leading-6 text-[var(--muted)]">
+                  Government-run inspiration and advisories for planning routes, events, and regional highlights.
+                </p>
+                <span className="text-sm font-semibold text-[var(--accent)] transition group-hover:translate-x-1">
+                  Open resource &rarr;
+                </span>
+              </a>
+
+              <a
+                href="https://www.immigration.gov.lk"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group flex flex-col gap-2 rounded-2xl border border-[var(--border-soft)] bg-white/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--accent)]/50 hover:shadow-lg"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
+                  Immigration
+                </span>
+                <span className="font-[var(--font-heading)] text-lg text-foreground">
+                  Department of Immigration
+                </span>
+                <p className="text-sm leading-6 text-[var(--muted)]">
+                  Official updates on entry rules, extensions, and compliance for travelers and expats.
+                </p>
+                <span className="text-sm font-semibold text-[var(--accent)] transition group-hover:translate-x-1">
+                  Open resource &rarr;
+                </span>
+              </a>
+
+              <a
+                href="https://seatreservation.railway.gov.lk"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group flex flex-col gap-2 rounded-2xl border border-[var(--border-soft)] bg-white/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--accent)]/50 hover:shadow-lg"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
+                  Transport
+                </span>
+                <span className="font-[var(--font-heading)] text-lg text-foreground">
+                  Railway Reservations
+                </span>
+                <p className="text-sm leading-6 text-[var(--muted)]">
+                  Direct seat bookings on the official Sri Lanka Railways system for routes like Kandy-Ella.
+                </p>
+                <span className="text-sm font-semibold text-[var(--accent)] transition group-hover:translate-x-1">
+                  Open resource &rarr;
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
