@@ -1,6 +1,7 @@
 import Image from "next/image";
 import PaginationClient from "./PaginationClient";
 import HeroSlider from "./HeroSlider";
+import BackToTopButton from "./BackToTopButton";
 
 export const dynamic = "force-dynamic";
 
@@ -669,6 +670,7 @@ export default async function Home({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       </section>
+      <BackToTopButton />
     </div>
   );
 }
