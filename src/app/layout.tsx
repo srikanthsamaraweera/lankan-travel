@@ -42,9 +42,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const year = new Date().getFullYear();
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    name: "Sri Lankan Vacations",
+    url: "https://travel.lankan.org",
+    logo: "https://travel.lankan.org/srilankan_vacations_logo.png",
+    description: "Your ultimate guide to Sri Lanka travel, news, and itineraries.",
+    parentOrganization: {
+      "@type": "NewsMediaOrganization",
+      name: "Lankan.org",
+      url: "https://www.lankan.org",
+    },
+  };
 
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${poppins.variable} antialiased`}
       >

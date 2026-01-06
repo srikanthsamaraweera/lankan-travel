@@ -1,16 +1,21 @@
 "use client";
 
+import type React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/#usefulLinks", label: "Useful Links" },
+  { href: "/#faqSection", label: "FAQ" },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function HeaderNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -18,7 +23,33 @@ export default function HeaderNav() {
   }, [pathname]);
 
   const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
+    href.startsWith("#")
+      ? false
+      : pathname === href || pathname.startsWith(`${href}/`);
+
+  const handleNavClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    const isHashLink = href.startsWith("#") || href.startsWith("/#");
+
+    if (isHashLink) {
+      event.preventDefault();
+      const targetId = href.replace("/#", "").replace("#", "");
+
+      if (pathname === "/") {
+        const target = document.getElementById(targetId);
+        target?.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.history.replaceState({}, "", `#${targetId}`);
+      } else {
+        router.push(`/#${targetId}`);
+      }
+      setMenuOpen(false);
+      return;
+    }
+
+    setMenuOpen(false);
+  };
 
   return (
     <div className="relative flex items-center gap-2">
@@ -27,6 +58,7 @@ export default function HeaderNav() {
           <Link
             key={link.href}
             href={link.href}
+            onClick={(event) => handleNavClick(event, link.href)}
             className={`rounded-full px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--accent)] ${isActive(link.href) ? "bg-[var(--accent)]/10 text-[var(--accent)]" : ""
               }`}
           >
@@ -62,6 +94,7 @@ export default function HeaderNav() {
             <Link
               key={link.href}
               href={link.href}
+              onClick={(event) => handleNavClick(event, link.href)}
               className={`rounded-xl px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--accent)] ${isActive(link.href) ? "bg-[var(--accent)]/10 text-[var(--accent)]" : ""
                 }`}
             >
