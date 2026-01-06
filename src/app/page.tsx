@@ -2,6 +2,7 @@ import Image from "next/image";
 import PaginationClient from "./PaginationClient";
 import HeroSlider from "./HeroSlider";
 import BackToTopButton from "./BackToTopButton";
+import HashScroll from "./HashScroll";
 
 export const dynamic = "force-dynamic";
 
@@ -240,6 +241,7 @@ export default async function Home({
 
   return (
     <div className="min-h-screen !bg-[#F7FAFD]">
+      <HashScroll />
 
       {activePage == 1 && <section className="relative w-full bg-[#040E27] text-white">
         <div className="mx-auto max-w-6xl px-6 py-14 lg:px-10">

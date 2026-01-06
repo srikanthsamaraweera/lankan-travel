@@ -2,17 +2,20 @@
 
 import type React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "#usefulLinks", label: "Useful Links" },
+  { href: "/#usefulLinks", label: "Useful Links" },
+  { href: "/#faqSection", label: "FAQ" },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function HeaderNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -28,14 +31,23 @@ export default function HeaderNav() {
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
-    if (href.startsWith("#")) {
+    const isHashLink = href.startsWith("#") || href.startsWith("/#");
+
+    if (isHashLink) {
       event.preventDefault();
-      const target = document.querySelector(href);
-      target?.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.history.replaceState({}, "", href);
+      const targetId = href.replace("/#", "").replace("#", "");
+
+      if (pathname === "/") {
+        const target = document.getElementById(targetId);
+        target?.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.history.replaceState({}, "", `#${targetId}`);
+      } else {
+        router.push(`/#${targetId}`);
+      }
       setMenuOpen(false);
       return;
     }
+
     setMenuOpen(false);
   };
 
