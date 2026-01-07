@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import InteractiveMap from "../../../public/components/InteractiveMaps";
+import InteractiveMapClient from "./InteractiveMapClient";
 
 export const metadata: Metadata = {
   title: "Sri Lanka Attractions Map | Lankan Travel",
@@ -80,7 +80,7 @@ export default function AttractionsPage() {
             </div>
           </div>
           <div className="p-4 lg:p-6">
-            <InteractiveMap />
+            <InteractiveMapClient />
           </div>
         </div>
       </section>
