@@ -1,15 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-
-const InteractiveMap = dynamic(
-  () => import("../../../public/components/InteractiveMaps"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-[800px] w-full animate-pulse rounded-3xl bg-gray-100" />
-    ),
-  },
-);
+import InteractiveMapClient from "./InteractiveMapClient";
 
 export const metadata: Metadata = {
   title: "Sri Lanka Attractions Map | Lankan Travel",
@@ -90,7 +80,7 @@ export default function AttractionsPage() {
             </div>
           </div>
           <div className="p-4 lg:p-6">
-            <InteractiveMap />
+            <InteractiveMapClient />
           </div>
         </div>
       </section>
