@@ -259,7 +259,9 @@ export default async function Home({
               </span>
               <div className="space-y-4">
                 <h1 className="font-[var(--font-heading)] text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
-                  Discover the Wonder of Asia: Your Ultimate Sri Lanka Travel Guide
+                  Discover the Wonder of Asia: Your Ultimate
+                  <br />
+                  Sri Lanka Travel Guide
                 </h1>
                 <p className="max-w-3xl text-base leading-relaxed text-white/80 sm:text-lg">
                   Welcome to travel.lankan.org, your premier resource for exploring the "Pearl of the Indian Ocean." Whether you are planning a two-week itinerary through the misty tea hills of Ella or looking for the best surf spots in Arugam Bay, our curated guide covers every corner of this tropical paradise. As a dedicated travel hub, we move beyond the headlines to bring you practical, on-the-ground advice for your 2026 adventure.
