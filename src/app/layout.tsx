@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   title: "Lankan.org Travel Highlights",
   description:
     "Fresh travel stories from Lankan.org, curated for wanderers planning their next Sri Lankan journey.",
+  verification: {
+    google: "kLdMyeHLlsY5GiAuaqzoXM3xq5zbOFMvqK6H6pt-0K8",
+  },
   icons: {
     icon: "/icon.png",
   },
